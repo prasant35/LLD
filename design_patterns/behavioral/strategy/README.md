@@ -46,8 +46,8 @@ In this example:
 Compile all .cpp files and run the executable:
 
 ```bash
-g++ -std=c++17 *.cpp -o duck_demo
-./duck_demo
+g++ main.cpp -o duck_program
+.\duck_program
 ```
 
 ## Design Pattern Benefits
