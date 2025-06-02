@@ -6,6 +6,10 @@ int main(){
     Duck* mallard = new MallardDuck();
     mallard->display();
     mallard->performFly();
+
+    mallard->setFlyBehavior(new FlyNoWay());  // runtime behavior change
+    mallard->performFly();
+    
     mallard->performQuack();
     delete mallard;
 
