@@ -1,9 +1,9 @@
 #include "QuackBehavior.hpp"
 #include <iostream>
 
-class Quack : public : QuackBehavior{
+class MuteQuack : public QuackBehavior{
     public:
     void quack() override{
-        std::cout<<"Quack quack"<<std::endl;
+        std::cout<<"I am mute"<<std::endl;
     }
-};
+}
