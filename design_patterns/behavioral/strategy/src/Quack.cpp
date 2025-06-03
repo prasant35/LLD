@@ -1,4 +1,4 @@
-#include "QuackBehavior.hpp"
+#include "../include/QuackBehavior.hpp"
 #include <iostream>
 
 class Quack : public  QuackBehavior{

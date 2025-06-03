@@ -1,4 +1,4 @@
-#include "FlyBehavior.hpp"
+#include "../include/FlyBehavior.hpp"
 #include <iostream>
 
 class FlyNoWay : public FlyBehavior{

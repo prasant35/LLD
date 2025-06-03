@@ -1,4 +1,4 @@
-#include "Duck.hpp"
+#include "../include/Duck.hpp"
 #include "FlyNoWay.cpp"
 #include "MuteQuack.cpp"
 #include <iostream>

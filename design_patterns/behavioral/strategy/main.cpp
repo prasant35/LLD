@@ -1,5 +1,5 @@
-#include "MallardDuck.cpp"
-#include "RubberDuck.cpp"
+#include "src/MallardDuck.cpp"
+#include "src/RubberDuck.cpp"
 #include <iostream>
 
 int main(){
