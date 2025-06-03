@@ -24,4 +24,8 @@ public:
     void display() override{
         std::cout << "Max/Min temperature: " << maxTemp << "/" << minTemp << std::endl;
     }
+
+    void remove(){
+        weatherData->removeObserver(this);
+    }
 };
