@@ -13,6 +13,26 @@ In this example:
   - `FlyWithWings` and `FlyNoWay` for flying behavior
   - `Quack`, `MuteQuack`, and `Squeak` for quacking behavior
 
+## Directory Structure
+```
+strategy/
+├── include/                    # Header files
+│   ├── Duck.hpp               # Abstract Duck class
+│   ├── FlyBehavior.hpp        # Flying strategy interface
+│   └── QuackBehavior.hpp      # Quacking strategy interface
+│
+├── src/                       # Source files
+│   ├── FlyWithWings.cpp      # Concrete flying behavior
+│   ├── FlyNoWay.cpp          # Concrete flying behavior
+│   ├── Quack.cpp             # Concrete quacking behavior
+│   ├── MuteQuack.cpp         # Concrete quacking behavior
+│   ├── MallardDuck.cpp       # Concrete duck type
+│   └── RubberDuck.cpp        # Concrete duck type
+│
+├── main.cpp                   # Main program
+└── README.md                  # This file
+```
+
 ## Class Structure
 
 - `Duck` (abstract base class)
