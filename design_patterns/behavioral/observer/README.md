@@ -1,9 +1,9 @@
 # Weather Station - Observer Pattern Implementation Guide
 
-## 🎯 Project Overview
+## Project Overview
 This project implements a Weather Station system using the Observer Pattern, based on the example from Head First Design Patterns. The system displays various weather metrics through different display elements that automatically update when weather data changes.
 
-## 📁 Project Structure
+## Project Structure
 ```
 observer/
 ├── include/          # Header files
