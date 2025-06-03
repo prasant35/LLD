@@ -1,5 +1,5 @@
-#include "include/Subject.hpp"
-#include "include/Observer.hpp"
+#include "../include/Subject.hpp"
+#include "../include/Observer.hpp"
 #include <iostream>
 #include <vector>
 #include <algorithm>

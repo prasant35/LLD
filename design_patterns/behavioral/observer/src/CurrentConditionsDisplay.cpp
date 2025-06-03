@@ -1,6 +1,6 @@
-#include "include/Display.hpp"
-#include "include/Observer.hpp"
-#include "include/Subject.hpp"
+#include "../include/Display.hpp"
+#include "../include/Observer.hpp"
+#include "../include/Subject.hpp"
 #include <iostream>
 
 class CurrentConditionsDisplay : public Observer, public Display{
