@@ -65,37 +65,4 @@ Compile all .cpp files and run the executable:
 g++ main.cpp -o weather_program
 .\weather_program
 ```
-
-## 🔍 Key Implementation Guidelines
-
-### Best Practices
-1. **Memory Management**
-   - Use smart pointers
-   - Properly handle observer cleanup
-   - Avoid memory leaks in observer list
-
-2. **Design Principles**
-   - Follow SOLID principles
-   - Keep classes focused and single-responsibility
-   - Use proper encapsulation
-
-3. **Error Handling**
-   - Validate input data
-   - Handle null observers
-   - Check for invalid measurements
-
-### Testing Strategy
-1. Test observer registration/removal
-2. Verify update propagation
-3. Check display accuracy
-4. Ensure proper cleanup
-
-
-## 📝 Notes
-- Focus on understanding the pattern
-- Write clean, maintainable code
-- Document key decisions
-- Add proper comments
-
----
 *This is a learning project based on Head First Design Patterns' Weather Station example.* 
