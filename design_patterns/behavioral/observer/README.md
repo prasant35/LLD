@@ -53,10 +53,6 @@ Implement these concrete observers:
 - Tracks min/max/average values
 - Updates statistics with new data
 
-#### Forecast Display
-- Predicts weather based on pressure trends
-- Shows basic forecast information
-
 ## Building and Running
 
 Compile all .cpp files and run the executable:
