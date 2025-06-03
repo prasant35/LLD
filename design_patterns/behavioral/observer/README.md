@@ -57,6 +57,15 @@ Implement these concrete observers:
 - Predicts weather based on pressure trends
 - Shows basic forecast information
 
+## Building and Running
+
+Compile all .cpp files and run the executable:
+
+```bash
+g++ main.cpp -o weather_program
+.\weather_program
+```
+
 ## 🔍 Key Implementation Guidelines
 
 ### Best Practices
