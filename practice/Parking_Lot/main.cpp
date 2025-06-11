@@ -42,28 +42,105 @@ enum class VechicleType{
     TRUCK,
     BIKE
 };
-enum class SlotType{
-    TRUCK,
-    BIKE,
-    CAR
-};
 
 class Slot{
     int slotNumber;
-    SlotType slotType;
+    VechicleType slotType;
     bool occupied;
 public:
-    Slot(int slotNumber, SlotType slotType) : slotNumber(slotNumber), slotType(slotType), occupied(false) {}
+    Slot(int slotNumber, VechicleType slotType) : slotNumber(slotNumber), slotType(slotType), occupied(false) {}
     int getSlotNumber(){
         return slotNumber;
     }
-    SlotType getSlotType(){
+    VechicleType getSlotType(){
         return slotType;
     }
     bool isOccupied(){
         return occupied;
     }
     void setOccupied(bool isOccupied){
-        this->isOccupied = isOccupied;
+        this->occupied = isOccupied;
     }
 };
+
+class Floor{
+    int floorNumber;
+    vector<Slot*> slots;
+public:
+    Floor(int floorNumber, int numSlots){
+        this->floorNumber = floorNumber;
+
+        if(numSlots>=1){
+            slots.push_back(new Slot(1, VechicleType::TRUCK));
+        }
+        if(numSlots>=2){
+            slots.push_back(new Slot(2, VechicleType::BIKE));
+        }
+        if(numSlots>=3){
+            slots.push_back(new Slot(3, VechicleType::BIKE));
+        }
+        for(int i=4;i<=numSlots;i++){
+            slots.push_back(new Slot(i, VechicleType::CAR));
+        }
+    }
+
+    int getFreeSlot(VechicleType vechicleType){
+        for(int i=0;i<slots.size();i++){
+            if(slots[i]->getSlotType()==vechicleType && !slots[i]->isOccupied()){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    // return true if successfully parked
+    string parkVehicle(VechicleType vechicleType){
+        int slotNumber = getFreeSlot(vechicleType);
+        if(slotNumber==-1){
+            return "";
+        }
+        slots[slotNumber]->setOccupied(true);
+        return to_string(floorNumber)+"_"+to_string(slotNumber+1);
+    }
+};
+
+class ParkingLot{
+    string parkingLotId;
+    vector<Floor*> floors;
+public:
+    ParkingLot(string parkingLotId) : parkingLotId(parkingLotId) {}
+
+    void addFloor(int floorNumber, int numSlots){
+        floors.push_back(new Floor(floorNumber, numSlots));
+    }
+
+    string parkVehicle(VechicleType vechicleType){
+        for(int i=0;i<floors.size();i++){
+            string ticket = floors[i]->parkVehicle(vechicleType);
+            if(ticket!=""){
+                return parkingLotId+"_"+ticket;
+            }
+        }
+        return "-1";
+    }
+};
+
+int main(){
+    ParkingLot parkingLot("PR1234");
+    parkingLot.addFloor(1, 10);
+    parkingLot.addFloor(2, 10);
+
+    string ticket = parkingLot.parkVehicle(VechicleType::CAR);
+    cout<<ticket<<endl;
+    string ticket4 = parkingLot.parkVehicle(VechicleType::CAR);
+    cout<<ticket4<<endl;
+
+    string ticket2 = parkingLot.parkVehicle(VechicleType::BIKE);
+    cout<<ticket2<<endl;
+
+    string ticket3 = parkingLot.parkVehicle(VechicleType::TRUCK);
+    cout<<ticket3<<endl;
+
+
+    return 0;
+}
