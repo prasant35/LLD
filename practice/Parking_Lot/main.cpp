@@ -1,0 +1,69 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+/*
+We are going to implement a parking lot system.
+Requirements
+Create a command-line application for the parking lot system with the following requirements.
+
+The functions that the parking lot system can do:
+Create the parking lot.
+Add floors to the parking lot.
+Add a parking lot slot to any of the floors.
+Given a vehicle, it finds the first available slot, books it, creates a ticket, parks the vehicle, and finally returns the ticket.
+Unparks a vehicle given the ticket id.
+Displays the number of free slots per floor for a specific vehicle type.
+Details about the Vehicles:
+Every vehicle will have a type, registration number, and color.
+Different Types of Vehicles:
+Car
+Bike
+Truck
+Details about the Parking Slots:
+Each type of slot can park a specific type of vehicle.
+No other vehicle should be allowed by the system.
+Finding the first available slot should be based on:
+The slot should be of the same type as the vehicle.
+The slot should be on the lowest possible floor in the parking lot.
+The slot should have the lowest possible slot number on the floor.
+Numbered serially from 1 to n for each floor where n is the number of parking slots on that floor.
+Details about the Parking Lot Floors:
+Numbered serially from 1 to n where n is the number of floors.
+Might contain one or more parking lot slots of different types.
+We will assume that the first slot on each floor will be for a truck, the next 2 for bikes, and all the other slots for cars.
+Details about the Tickets:
+The ticket id would be of the following format:
+<parking_lot_id>_<floor_no>_<slot_no>
+Example: PR1234_2_5 (denotes 5th slot of 2nd floor of parking lot PR1234)
+We can assume that there will only be 1 parking lot. The ID of that parking lot is PR1234.
+*/
+enum class VechicleType{
+    CAR,
+    TRUCK,
+    BIKE
+};
+enum class SlotType{
+    TRUCK,
+    BIKE,
+    CAR
+};
+
+class Slot{
+    int slotNumber;
+    SlotType slotType;
+    bool occupied;
+public:
+    Slot(int slotNumber, SlotType slotType) : slotNumber(slotNumber), slotType(slotType), occupied(false) {}
+    int getSlotNumber(){
+        return slotNumber;
+    }
+    SlotType getSlotType(){
+        return slotType;
+    }
+    bool isOccupied(){
+        return occupied;
+    }
+    void setOccupied(bool isOccupied){
+        this->isOccupied = isOccupied;
+    }
+};
