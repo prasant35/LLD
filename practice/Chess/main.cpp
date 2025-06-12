@@ -34,13 +34,11 @@ struct Position{
 class Piece{
 protected: // this members are going to get inherited by derived classes, if we make then private, they wont be able to access it.
     Color color;
-    Position position;
 public:
-    Piece(Color color, Position position) : color(color), position(position) {}
+    Piece(Color color) : color(color) {}
     virtual ~Piece() = default;
 
     Color getColor() {return color;}
-    Position getPos() {return position;}
     
     virtual bool isValidMove(Position from, Position to, const vector<vector<Piece*>>& board) = 0;
     virtual string getSymbol() = 0; // for printing the chessboard
@@ -49,7 +47,7 @@ public:
 class Knight : public Piece{
 
 public:
-    Knight(Color color, Position position) : Piece(color, position) {}
+    Knight(Color color) : Piece(color) {}
 
     bool isValidMove(Position from, Position to, const vector<vector<Piece*>>& board){
         int dx = abs(from.row - to.row);
@@ -91,16 +89,16 @@ public:
 
     void init(){
         // manually initiallize the board to starting position
-        Piece* WN1 = new Knight(Color::WHITE, Position("b1"));
-        Piece* WN2 = new Knight(Color::WHITE, Position("g1"));
+        Piece* WN1 = new Knight(Color::WHITE);
+        Piece* WN2 = new Knight(Color::WHITE);
 
-        Piece* BN1 = new Knight(Color::BLACK, Position("b8"));
-        Piece* BN2 = new Knight(Color::BLACK, Position("g8"));
+        Piece* BN1 = new Knight(Color::BLACK);
+        Piece* BN2 = new Knight(Color::BLACK);
 
-        setPiece(WN1, WN1->getPos());
-        setPiece(WN2, WN2->getPos());
-        setPiece(BN1, BN1->getPos());
-        setPiece(BN2, BN2->getPos());
+        setPiece(WN1, Position("b1"));
+        setPiece(WN2, Position("g1"));
+        setPiece(BN1, Position("b8"));
+        setPiece(BN2, Position("g8"));
     }
 
     void printBoard(){
@@ -110,6 +108,19 @@ public:
                     cout<<board[i][j]->getSymbol()<<" ";
                 }else cout<<"-- ";
             }cout<<endl;
+        }
+        cout<<endl;
+    }
+
+    bool movePiece(Position pos1, Position pos2){
+        Piece * piece = getPieceAt(pos1);
+        if(piece->isValidMove(pos1, pos2, board)){
+            setPiece(piece, pos2);
+            board[pos1.row][pos1.col] = nullptr;
+            return true;
+        }else{
+            cout<<"Inavlid move"<<endl;
+            return false;
         }
     }
 
@@ -128,4 +139,12 @@ int main(){
     Board *board = new Board();
     board->init();
     board->printBoard();
+    
+    board->movePiece(Position("b1"), Position("c3"));
+    board->printBoard();
+    board->movePiece(Position("b8"), Position("c6"));
+    board->printBoard();
+
+    return 0;
+
 }
