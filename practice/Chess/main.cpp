@@ -20,6 +20,12 @@ enum class Color{
 
 struct Position{
     int row, col;
+    Position(string s){
+        // positions in chess are flipped, cell(0,0) is a8, (0,8) is a1
+        col = s[0]-'a';
+        row = 8 - (s[1] - '0');;
+    }
+
     void setPosition(string s){
         // positions in chess are flipped, cell(0,0) is a8, (0,8) is a1
         col = s[0]-'a';
@@ -32,7 +38,7 @@ struct Position{
         return col;
     }
     string getPosition(){
-        return string(1, 'a'+row) + string(1, '1'+col);
+        return string(1, 'a' + col) + to_string(8 - row);
     }
 };
  
@@ -77,3 +83,14 @@ public:
         return (getColor() == Color::WHITE ? "WN" : "BN");
     }
 };
+
+int main(){
+    vector<vector<Piece*>> board(8, vector<Piece*>(8, nullptr));
+    board[7][1] = new Knight(Color::WHITE, Position("b1"));
+    cout<<board[7][1]->isValidMove(Position("b1"), Position("d2"), board)<<endl;
+    
+    board[6][3] = new Knight(Color::WHITE, Position("d2"));
+
+    cout<<board[7][1]->isValidMove(Position("b1"), Position("d2"), board)<<endl;
+    cout<<board[7][1]->isValidMove(Position("b1"), Position("d1"), board)<<endl;
+}
