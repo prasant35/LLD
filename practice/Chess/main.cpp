@@ -18,12 +18,12 @@ enum class Color{
     WHITE
 };
 
-class Position{
+struct Position{
     int row, col;
-public:
     void setPosition(string s){
-        row = s[0]-'a';
-        col = s[1]-'1';
+        // positions in chess are flipped, cell(0,0) is a8, (0,8) is a1
+        col = s[0]-'a';
+        row = 8 - (s[1] - '0');;
     }
     int getRow(){
         return row;
@@ -35,11 +35,45 @@ public:
         return string(1, 'a'+row) + string(1, '1'+col);
     }
 };
-
+ 
 class Piece{
+protected: // this members are going to get inherited by derived classes, if we make then private, they wont be able to access it.
     Color color;
     Position position;
 public:
-    virtual bool isValid() = 0;
+    Piece(Color color, Position position) : color(color), position(position) {}
     virtual ~Piece() = default;
+
+    Color getColor() {return color;}
+
+    virtual bool isValidMove(Position from, Position to, const vector<vector<Piece*>>& board) = 0;
+    virtual string getSymbol() = 0; // for printing the chessboard
+};
+
+class Knight : public Piece{
+
+public:
+    Knight(Color color, Position position) : Piece(color, position) {}
+
+    bool isValidMove(Position from, Position to, const vector<vector<Piece*>>& board){
+        int dx = abs(from.row - to.row);
+        int dy = abs(from.col - to.col);
+
+        // knight makes L-shape move
+        if(!((dx == 2) && (dy == 1)) && !((dy == 2) && (dx == 1))){
+            return false;
+        }
+
+        // cant capture our own color piece
+        Piece *target = board[to.row][to.col];
+        if(target and target->getColor() == this-> color){
+            return false;
+        }
+
+        return true;
+    }
+
+    string getSymbol(){
+        return (getColor() == Color::WHITE ? "WN" : "BN");
+    }
 };
