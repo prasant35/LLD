@@ -26,17 +26,6 @@ struct Position{
         row = 8 - (s[1] - '0');;
     }
 
-    void setPosition(string s){
-        // positions in chess are flipped, cell(0,0) is a8, (0,8) is a1
-        col = s[0]-'a';
-        row = 8 - (s[1] - '0');;
-    }
-    int getRow(){
-        return row;
-    }
-    int getCol(){
-        return col;
-    }
     string getPosition(){
         return string(1, 'a' + col) + to_string(8 - row);
     }
@@ -51,7 +40,8 @@ public:
     virtual ~Piece() = default;
 
     Color getColor() {return color;}
-
+    Position getPos() {return position;}
+    
     virtual bool isValidMove(Position from, Position to, const vector<vector<Piece*>>& board) = 0;
     virtual string getSymbol() = 0; // for printing the chessboard
 };
@@ -84,13 +74,58 @@ public:
     }
 };
 
-int main(){
-    vector<vector<Piece*>> board(8, vector<Piece*>(8, nullptr));
-    board[7][1] = new Knight(Color::WHITE, Position("b1"));
-    cout<<board[7][1]->isValidMove(Position("b1"), Position("d2"), board)<<endl;
-    
-    board[6][3] = new Knight(Color::WHITE, Position("d2"));
+class Board{
+    vector<vector<Piece*>> board;
+public:
+    Board(){
+        board = vector<vector<Piece*>>(8, vector<Piece*>(8, nullptr));
+    }
 
-    cout<<board[7][1]->isValidMove(Position("b1"), Position("d2"), board)<<endl;
-    cout<<board[7][1]->isValidMove(Position("b1"), Position("d1"), board)<<endl;
+    void setPiece(Piece* piece, Position pos){
+        board[pos.row][pos.col] = piece;
+    }
+
+    Piece* getPieceAt(Position pos){
+        return board[pos.row][pos.col];
+    }
+
+    void init(){
+        // manually initiallize the board to starting position
+        Piece* WN1 = new Knight(Color::WHITE, Position("b1"));
+        Piece* WN2 = new Knight(Color::WHITE, Position("g1"));
+
+        Piece* BN1 = new Knight(Color::BLACK, Position("b8"));
+        Piece* BN2 = new Knight(Color::BLACK, Position("g8"));
+
+        setPiece(WN1, WN1->getPos());
+        setPiece(WN2, WN2->getPos());
+        setPiece(BN1, BN1->getPos());
+        setPiece(BN2, BN2->getPos());
+    }
+
+    void printBoard(){
+        for(int i=0;i<8;i++){
+            for(int j=0;j<8;j++){
+                if(board[i][j]){
+                    cout<<board[i][j]->getSymbol()<<" ";
+                }else cout<<"-- ";
+            }cout<<endl;
+        }
+    }
+
+};
+
+int main(){
+    // vector<vector<Piece*>> board(8, vector<Piece*>(8, nullptr));
+    // board[7][1] = new Knight(Color::WHITE, Position("b1"));
+    // cout<<board[7][1]->isValidMove(Position("b1"), Position("d2"), board)<<endl;
+
+    // board[6][3] = new Knight(Color::WHITE, Position("d2"));
+
+    // cout<<board[7][1]->isValidMove(Position("b1"), Position("d2"), board)<<endl;
+    // cout<<board[7][1]->isValidMove(Position("b1"), Position("d1"), board)<<endl;
+
+    Board *board = new Board();
+    board->init();
+    board->printBoard();
 }
