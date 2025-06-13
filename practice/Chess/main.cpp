@@ -72,6 +72,42 @@ public:
     }
 };
 
+class Rook : public Piece{ // Rook can move either vetical or horizontal
+public:
+    Rook(Color color) : Piece(color) {}
+    bool isValidMove(Position from, Position to, const vector<vector<Piece*>>& board){
+        if((abs(from.row - to.row) != 0) && ((abs(from.col - to.col) != 0))){
+            return false;
+        }
+
+        // cant capture same color piece
+        Piece* target = board[to.row][to.col];
+        if(target and target->getColor() == this->color){
+            return false;
+        }
+        if(abs(from.row - to.row)==0){
+            // check whether its in positive direction or negative
+            int inc = (from.row<to.row)? 1 : -1;
+
+            for(int i=from.row;i<to.row;i+=inc){
+                if(board[i][from.col])return false; // path should be clear, there should be no peices.
+            }
+        }else{
+            // check whether its in positive direction or negative
+            int inc = (from.row<to.row)? 1 : -1;
+
+            for(int j=from.col;j<to.col;j+=inc){
+                if(board[from.row][j])return false; // path should be clear, there should be no peices.
+            }
+        }
+        return true;
+    }
+
+    string getSymbol(){
+        return (this->getColor() == Color::WHITE ? "WR" : "BR");
+    }
+};
+
 class Board{
     vector<vector<Piece*>> board;
 public:
@@ -89,6 +125,8 @@ public:
 
     void init(){
         // manually initiallize the board to starting position
+
+        //Knight
         Piece* WN1 = new Knight(Color::WHITE);
         Piece* WN2 = new Knight(Color::WHITE);
 
@@ -99,6 +137,19 @@ public:
         setPiece(WN2, Position("g1"));
         setPiece(BN1, Position("b8"));
         setPiece(BN2, Position("g8"));
+
+        //Rock
+        Piece* WR1= new Rook(Color::WHITE);
+        Piece* WR2= new Rook(Color::WHITE);
+
+        Piece* BR1 = new Rook(Color::BLACK);
+        Piece* BR2 = new Rook(Color::BLACK);
+
+        setPiece(WR1, Position("a1"));
+        setPiece(WR2, Position("h1"));
+        setPiece(BR1, Position("a8"));
+        setPiece(BR2, Position("h8"));
+        
     }
 
     void printBoard(){
@@ -143,6 +194,9 @@ int main(){
     board->movePiece(Position("b1"), Position("c3"));
     board->printBoard();
     board->movePiece(Position("b8"), Position("c6"));
+    board->printBoard();
+
+    board->movePiece(Position("a1"), Position("a5"));
     board->printBoard();
 
     return 0;
