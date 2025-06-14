@@ -76,30 +76,33 @@ class Rook : public Piece{ // Rook can move either vetical or horizontal
 public:
     Rook(Color color) : Piece(color) {}
     bool isValidMove(Position from, Position to, const vector<vector<Piece*>>& board){
-        if((abs(from.row - to.row) != 0) && ((abs(from.col - to.col) != 0))){
+        // Rook must move in a straight line (either row or col stays the same)
+        if ((from.row != to.row) && (from.col != to.col)) {
             return false;
         }
 
-        // cant capture same color piece
+        // Can't capture same-color piece
         Piece* target = board[to.row][to.col];
-        if(target and target->getColor() == this->color){
+        if (target && target->getColor() == this->color) {
             return false;
         }
-        if(abs(from.row - to.row)==0){
-            // check whether its in positive direction or negative
-            int inc = (from.row<to.row)? 1 : -1;
 
-            for(int i=from.row+1;i<to.row;i+=inc){
-                if(board[i][from.col])return false; // path should be clear, there should be no peices.
+        if (from.row == to.row) {
+            // Moving horizontally
+            int start = min(from.col, to.col) + 1;
+            int end = max(from.col, to.col);
+            for (int j = start; j < end; j++) {
+                if (board[from.row][j]) return false;
             }
-        }else{
-            // check whether its in positive direction or negative
-            int inc = (from.row<to.row)? 1 : -1;
-
-            for(int j=from.col+1;j<to.col;j+=inc){
-                if(board[from.row][j])return false; // path should be clear, there should be no peices.
+        } else {
+            // Moving vertically
+            int start = min(from.row, to.row) + 1;
+            int end = max(from.row, to.row);
+            for (int i = start; i < end; i++) {
+                if (board[i][from.col]) return false;
             }
         }
+
         return true;
     }
 
@@ -164,33 +167,37 @@ public:
         return true;
     }
 
-    bool rookMove(Position from, Position to, const vector<vector<Piece*>>& board){
-        if((abs(from.row - to.row) != 0) && ((abs(from.col - to.col) != 0))){
+    bool rookMove(Position from, Position to, const vector<vector<Piece*>>& board) {
+        // Rook must move in a straight line (either row or col stays the same)
+        if ((from.row != to.row) && (from.col != to.col)) {
             return false;
         }
 
-        // cant capture same color piece
+        // Can't capture same-color piece
         Piece* target = board[to.row][to.col];
-        if(target and target->getColor() == this->color){
+        if (target && target->getColor() == this->color) {
             return false;
         }
-        if(abs(from.row - to.row)==0){
-            // check whether its in positive direction or negative
-            int inc = (from.row<to.row)? 1 : -1;
 
-            for(int i=from.row+1;i<to.row;i+=inc){
-                if(board[i][from.col])return false; // path should be clear, there should be no peices.
+        if (from.row == to.row) {
+            // Moving horizontally
+            int start = min(from.col, to.col) + 1;
+            int end = max(from.col, to.col);
+            for (int j = start; j < end; j++) {
+                if (board[from.row][j]) return false;
             }
-        }else{
-            // check whether its in positive direction or negative
-            int inc = (from.row<to.row)? 1 : -1;
-
-            for(int j=from.col+1;j<to.col;j+=inc){
-                if(board[from.row][j])return false; // path should be clear, there should be no peices.
+        } else {
+            // Moving vertically
+            int start = min(from.row, to.row) + 1;
+            int end = max(from.row, to.row);
+            for (int i = start; i < end; i++) {
+                if (board[i][from.col]) return false;
             }
         }
+
         return true;
     }
+
 
     bool isValidMove(Position from, Position to, const vector<vector<Piece*>>& board){
         return bishopMove(from, to, board) || rookMove(from, to, board);
@@ -198,6 +205,46 @@ public:
 
     string getSymbol(){
         return (this->color == Color::WHITE) ? "WQ" : "BQ";
+    }
+};
+
+class Pawn : public Piece{
+public:
+    Pawn(Color color) : Piece(color) {}
+
+    bool isValidMove(Position from, Position to, const vector<vector<Piece*>>& board){
+        if(abs(from.row - to.row) + abs(from.col - to.col) > 2){
+            return false;
+        }
+        int inc = (this->color == Color::WHITE) ? 1 : -1;
+        if((to.col*inc <= from.col*inc) || abs(from.row - to.row)==2){
+            return false;
+        }
+
+        
+
+        Piece* target = board[to.row][to.col];
+        if(target && target->getColor() == this->color){
+            return false;
+        }
+
+        if(abs(to.col - from.col) == 2){
+            if(this->color == Color::WHITE){
+                if(from.row != 7 or board[from.row][from.col+1] or board[from.row][from.col+2]){
+                    return false;
+                }
+            }else{
+                if(from.row != 2 or board[from.row][from.col-1] or board[from.row][from.col-2]){
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    string getSymbol(){
+        return (this->color == Color::WHITE) ? "WP" : "BP";
     }
 };
 
@@ -261,6 +308,16 @@ public:
 
         setPiece(WQ, Position("d1"));
         setPiece(BQ, Position("d8"));
+
+        //Pawn
+        for(char ch='a';ch<='h';ch++){
+            Piece* WP = new Pawn(Color::WHITE);
+            Piece* BP = new Pawn(Color::BLACK);
+            string posW = {ch, '2'};
+            string posB = {ch, '7'};
+            setPiece(WP, Position(posW));
+            setPiece(BP, Position(posB));
+        }
         
     }
 
