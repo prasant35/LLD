@@ -138,6 +138,69 @@ public:
     }
 };
 
+class Queen : public Piece{
+public:
+    Queen(Color color) : Piece(color) {}
+
+    // we can imagine a queen, mix of both bishop and rook.
+    bool bishopMove(Position from, Position to, const vector<vector<Piece*>>& board){
+        if(abs(from.row - to.row) != abs(from.col - to.col)){ // diagonally distance should be equal in both axis
+            return false;
+        }
+        // cant capture same color piece
+        Piece* target = board[to.row][to.col];
+        if(target and target->getColor() == this->color){
+            return false;
+        }
+
+        int inc_x = (from.row < to.row) ? 1 : -1;
+        int inc_y = (from.col < to.col) ? 1 : -1;
+
+        for(int x=from.row+1, y=from.col+1; x<to.row && y<to.col; x+=inc_x, y+=inc_x){
+            // path should be clear
+            if(board[x][y])return false;
+        }
+
+        return true;
+    }
+
+    bool rookMove(Position from, Position to, const vector<vector<Piece*>>& board){
+        if((abs(from.row - to.row) != 0) && ((abs(from.col - to.col) != 0))){
+            return false;
+        }
+
+        // cant capture same color piece
+        Piece* target = board[to.row][to.col];
+        if(target and target->getColor() == this->color){
+            return false;
+        }
+        if(abs(from.row - to.row)==0){
+            // check whether its in positive direction or negative
+            int inc = (from.row<to.row)? 1 : -1;
+
+            for(int i=from.row+1;i<to.row;i+=inc){
+                if(board[i][from.col])return false; // path should be clear, there should be no peices.
+            }
+        }else{
+            // check whether its in positive direction or negative
+            int inc = (from.row<to.row)? 1 : -1;
+
+            for(int j=from.col+1;j<to.col;j+=inc){
+                if(board[from.row][j])return false; // path should be clear, there should be no peices.
+            }
+        }
+        return true;
+    }
+
+    bool isValidMove(Position from, Position to, const vector<vector<Piece*>>& board){
+        return bishopMove(from, to, board) || rookMove(from, to, board);
+    }
+
+    string getSymbol(){
+        return (this->color == Color::WHITE) ? "WQ" : "BQ";
+    }
+};
+
 class Board{
     vector<vector<Piece*>> board;
 public:
@@ -191,6 +254,13 @@ public:
         setPiece(WB2, Position("f1"));
         setPiece(BB1, Position("c8"));
         setPiece(BB2, Position("f8"));
+
+        //Queen
+        Piece* WQ = new Queen(Color::WHITE);
+        Piece* BQ = new Queen(Color::BLACK);
+
+        setPiece(WQ, Position("d1"));
+        setPiece(BQ, Position("d8"));
         
     }
 
@@ -242,6 +312,12 @@ int main(){
     board->printBoard();
 
     board->movePiece(Position("c8"), Position("e6"));
+    board->printBoard();
+
+    board->movePiece(Position("d1"), Position("g4"));
+    board->printBoard();
+
+    board->movePiece(Position("g4"), Position("e6"));
     board->printBoard();
 
     return 0;
